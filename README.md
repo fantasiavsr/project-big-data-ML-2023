@@ -117,6 +117,25 @@ plt.show()
 #### hasil:
 ![image](https://github.com/fantasiavsr/project-big-data-ML-2023/blob/main/docs/img/category.png)
 
+1.	Mengimport library dan modul yang diperlukan: Kode dimulai dengan mengimpor beberapa library dan modul yang akan digunakan, termasuk matplotlib.pyplot, pyspark.sql.SparkSession, pandas, pyspark.sql.types.DoubleType, pyspark.ml.feature.StringIndexer, pyspark.ml.feature.VectorAssembler, dan pyspark.ml.regression.RandomForestRegressor.
+2.	Membuat sesi Spark: Dalam langkah ini, sebuah sesi Spark dibuat menggunakan SparkSession.builder.master("local[*]").getOrCreate(). Sesuai dengan konfigurasi tersebut, sesi Spark akan berjalan secara lokal dengan menggunakan semua core yang tersedia.
+3.	Membaca dataset: Dataset dibaca menggunakan spark.read.csv("dataset.csv", header=True, inferSchema=True). Dataset tersebut merupakan file CSV dengan baris header dan skema akan diinfer dari data.
+4.	Konversi kolom "view" menjadi tipe data numerik: Kolom "view" pada DataFrame data dikonversi menjadi tipe data numerik menggunakan data.withColumn("view", data["view"].cast(DoubleType())).
+5.	Membersihkan data dengan mengabaikan baris yang memiliki nilai-nilai yang tidak valid: Baris-baris dengan nilai-nilai yang tidak valid dalam kolom "category_id" dan "view" dihapus menggunakan data.dropna(subset=["category_id", "view"]).
+6.	Preprocessing data: Pada langkah ini, dilakukan preprocessing pada data untuk persiapan pemodelan. Kolom "category_id" diindeks menjadi "category_index" menggunakan StringIndexer, dan kolom "category_index" diubah menjadi vektor fitur "features" menggunakan VectorAssembler.
+7.	Split dataset menjadi training set dan test set: Dataset dibagi menjadi training set dan test set dengan perbandingan 80:20 menggunakan (training, test) = data.randomSplit([0.8, 0.2]).
+8.	Membangun model Random Forest Regressor: Model RandomForestRegressor dibangun dengan label kolom "view" dan fitur kolom "features" menggunakan RandomForestRegressor(labelCol="view", featuresCol="features"). Model ini akan digunakan untuk memprediksi jumlah view.
+9.	Memprediksi jumlah view menggunakan model: Model yang telah dibangun digunakan untuk memprediksi jumlah view pada test set dengan menggunakan model.transform(test).
+10.	Mengatur font yang mendukung karakter CJK: Font yang mendukung karakter CJK diatur menggunakan plt.rcParams["font.family"] = "DejaVu Sans".
+11.	Mengambil kolom publish_time dan category_id dari dataset: Kolom "publish_time" dan "category_id" diambil dari DataFrame predictions yang berisi hasil prediksi.
+12.	Menghitung jumlah video berdasarkan waktu dan kategori: Jumlah video dihitung berdasarkan waktu dan kategori menggunakan groupBy pada kolom "publish_time" dan "category_id", kemudian dihitung jumlahnya dengan count().
+13.	Mengubah hasil agregasi menjadi Pandas DataFrame: Hasil agregasi pada DataFrame video_count diubah menjadi Pandas DataFrame video_count_df agar dapat digunakan untuk visualisasi.
+14.	Menggabungkan kolom "publish_time" dan "category_id" menjadi satu kolom "label": Kolom "publish_time" dan "category_id" digabungkan menjadi satu kolom baru "label" dengan format "YYYY-MM-DD - NAMA_KATEGORI" menggunakan pd.to_datetime dan replace.
+15.	Mengurutkan berdasarkan count secara menurun: DataFrame video_count_df diurutkan berdasarkan kolom "count" secara menurun menggunakan sort_values.
+16.	Mengambil 10 bar teratas: DataFrame video_count_df diambil 10 bar teratas menggunakan head(10), sehingga hanya 10 kategori dengan jumlah video terbanyak yang ditampilkan dalam visualisasi.
+17.	Menampilkan grafik batang: DataFrame top_10_video_count_df digunakan untuk membuat grafik batang yang menunjukkan jumlah video untuk masing-masing kategori. Plot batang ini kemudian ditampilkan menggunakan plt.plot.
+
+
 ### Spark-Project Top Title Wordcloud:
 link colab: https://colab.research.google.com/drive/1H-tb8A10pdtO9vQzAjEBDLDGRnElk6qQ?usp=sharing
 ```sh
@@ -159,3 +178,14 @@ plt.show()
 ```
 #### hasil:
 ![image](https://github.com/fantasiavsr/project-big-data-ML-2023/blob/main/docs/img/wordloud.png)
+
+1.	Menginstall paket yang dibutuhkan: Pada langkah ini, beberapa paket yang diperlukan diinstal menggunakan !pip install. Paket-paket yang diinstal adalah pyspark dan wordcloud.
+2.	Mengimport library dan modul yang diperlukan: Kode dimulai dengan mengimpor beberapa library dan modul yang akan digunakan, termasuk pyspark.sql.SparkSession, pyspark.sql.functions.col, pyspark.sql.functions.sum, wordcloud, dan matplotlib.pyplot.
+3.	Membuat sesi Spark: Dalam langkah ini, sebuah sesi Spark dibuat menggunakan SparkSession.builder.master("local[*]").getOrCreate(). Sesuai dengan konfigurasi tersebut, sesi Spark akan berjalan secara lokal dengan menggunakan semua core yang tersedia.
+4.	Membaca dataset: Dataset dibaca menggunakan spark.read.csv("dataset.csv", header=True, inferSchema=True). Dataset tersebut merupakan file CSV dengan baris header dan skema akan diinfer dari data.
+5.	Memilih kolom yang dibutuhkan: Pada langkah ini, kolom-kolom yang dibutuhkan yaitu "publish_time", "title", dan "view" dipilih menggunakan df.select("publish_time", "title", "view"). DataFrame yang dihasilkan disimpan dalam variabel selected_df.
+6.	Mengelompokkan berdasarkan judul dan menjumlahkan jumlah view: DataFrame selected_df dikelompokkan berdasarkan kolom "title" dan menggunakan fungsi agregasi spark_sum untuk menjumlahkan jumlah view. Hasilnya disimpan dalam DataFrame grouped_df.
+7.	Mengkonversi DataFrame menjadi Pandas DataFrame: DataFrame grouped_df diubah menjadi Pandas DataFrame menggunakan toPandas(). Hal ini dilakukan agar data dapat digunakan untuk pembuatan wordcloud.
+8.	Membuat wordcloud: Pandas DataFrame pandas_df diubah menjadi dictionary dengan kolom "title" sebagai kunci dan kolom "view_count" sebagai nilai. Wordcloud kemudian dibuat menggunakan WordCloud dengan mengatur ukuran, warna latar belakang, dan font yang digunakan.
+9.	Menampilkan wordcloud: Wordcloud yang telah dibuat ditampilkan menggunakan plt.imshow. Ukuran gambar, pengaturan interpolasi, dan sumbu pada plot diatur. Akhirnya, wordcloud ditampilkan menggunakan plt.show().
+
