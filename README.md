@@ -155,4 +155,4 @@ plt.axis("off")
 plt.show()
 ```
 #### hasil:
-![image](https://github.com/fantasiavsr/project-big-data-ML-2023/blob/main/docs/img/wordcloud.png)
+![image](https://github.com/fantasiavsr/project-big-data-ML-2023/blob/main/docs/img/wordloud.png)
