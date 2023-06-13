@@ -112,7 +112,7 @@ plt.ylim(0, video_count_df["count"].max())
 plt.show()
 ```
 #### hasil:
-![image](https://github.com/fantasiavsr/project-big-data-ML-2023//blob/master/docs/img/category.png)
+![image](https://github.com/fantasiavsr/project-big-data-ML-2023/blob/main/docs/img/category.png)
 
 ### Spark-Project Top Title Wordcloud:
 link colab: https://colab.research.google.com/drive/1H-tb8A10pdtO9vQzAjEBDLDGRnElk6qQ?usp=sharing
@@ -155,4 +155,4 @@ plt.axis("off")
 plt.show()
 ```
 #### hasil:
-![image](https://github.com/fantasiavsr/project-big-data-ML-2023//blob/master/docs/img/wordcloud.png)
+![image](https://github.com/fantasiavsr/project-big-data-ML-2023/blob/main/docs/img/wordcloud.png)
