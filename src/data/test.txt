@@ -1,0 +1,17 @@
+{
+  "data1": "value",
+  "data2": "value",
+  "items": [
+    {
+      "data1": "value",
+      "data2": "value",
+      "id": "value",
+      "snippet": {
+        "data1": "value",
+        "data2": value,
+        "data3": "value"
+      }
+    },
+    dan seterusnya...
+  ]
+}
